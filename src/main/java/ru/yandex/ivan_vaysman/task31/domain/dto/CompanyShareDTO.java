@@ -1,5 +1,6 @@
 package ru.yandex.ivan_vaysman.task31.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,21 +23,50 @@ public class CompanyShareDTO {
     private Date closeTime;
     private String companyName;
     private String currency;
+    private BigDecimal delayedPrice;
+    private Date delayedPriceTime;
+    private BigDecimal extendedChange;
+    private BigDecimal extendedChangePercent;
+    private BigDecimal extendedPrice;
+    private String highSource;
+    private Date highTime;
+    private BigDecimal iexAskPrice;
+    private Long iexAskSize;
+    private BigDecimal iexBidPrice;
+    private Long iexBidSize;
+    private BigDecimal iexClose;
+    private Date iexCloseTime;
+    private Date iexLastUpdated;
+    private BigDecimal iexMarketPercent;
+    private BigDecimal iexOpen;
+    private Date iexOpenTime;
+    private BigDecimal iexRealtimePrice;
+    private Long iexRealtimeSize;
+    private Long iexVolume;
+    private Date lastTradeTime;
+    private BigDecimal latestPrice;
+    private String latestSource;
+    @JsonFormat(pattern = "Month D, Yr")
+    private Date latestTime;
+    private Date latestUpdate;
+    private Long latestVolume;
+    private Long low;
+    private String lowSource;
+    private Date lowTime;
+    private Long marketCap;
+    private BigDecimal oddLotDelayedPrice;
+    private Date oddLotDelayedPriceTime;
+    private Long open;
+    private Date openTime;
+    private String openSource;
+    private BigDecimal peRatio;
+    private BigDecimal previousClose;
+    private Long previousVolume;
+    private String primaryExchange;
+    private String symbol;
+    private Long volume;
+    private BigDecimal week52High;
+    private BigDecimal week52Low;
+    private BigDecimal ytdChange;
+    private Boolean isUSMarketOpen;
 }
-
-/*
-{"avgTotalVolume":31703432,"calculationPrice":"iexlasttrade",
-"change":-0.84,"changePercent":-0.00334,"close":0,"closeSource":"olffaici",
-"closeTime":null,"companyName":"Microsoft Corporation","currency":"USD",
-"delayedPrice":null,"delayedPriceTime":null,"extendedChange":null,
-"extendedChangePercent":null,"extendedPrice":null,"extendedPriceTime":null,"high":0,
-"highSource":null,"highTime":null,"iexAskPrice":0,"iexAskSize":0,"iexBidPrice":0,"iexBidSize":0,
-"iexClose":261.87,"iexCloseTime":1657491256477,"iexLastUpdated":1698423252880,"iexMarketPercent":0.032101383972385156,
-"iexOpen":263.66,"iexOpenTime":1724219401151,"iexRealtimePrice":264.26,"iexRealtimeSize":302,
-"iexVolume":817050,"lastTradeTime":1682879653861,"latestPrice":264.99,"latestSource":"IEX Last Trade",
-"latestTime":"June 22, 2022","latestUpdate":1738621743656,"latestVolume":null,"low":0,"lowSource":" lcei e ItiaeErprXm",
-"lowTime":1666735498154,"marketCap":1961064404929,"oddLotDelayedPrice":null,
-"oddLotDelayedPriceTime":null,"open":0,"openTime":null,"openSource":"oifaficl",
-"peRatio":27.1,"previousClose":264.06,"previousVolume":31299106,"primaryExchange":"AQDANS",
-"symbol":"MSFT","volume":null,"week52High":356.4,"week52Low":251.5,"ytdChange":-0.2608224377805512,"isUSMarketOpen":false}
- */
