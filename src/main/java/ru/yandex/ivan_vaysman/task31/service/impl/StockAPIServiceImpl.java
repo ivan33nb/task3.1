@@ -18,7 +18,9 @@ import ru.yandex.ivan_vaysman.task31.domain.entity.TradingCompany;
 import ru.yandex.ivan_vaysman.task31.domain.mapper.TradingCompanyMapper;
 import ru.yandex.ivan_vaysman.task31.service.StockAPIService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,19 +34,23 @@ public class StockAPIServiceImpl implements StockAPIService {
     private String tradingCompanyUrl;
 
     @Override
-    public TradingCompany getInfoAboutTradingCompany() {
+    public List<TradingCompany> getInfoAboutTradingCompany() {
+        List<TradingCompany> response = new CopyOnWriteArrayList<>();
         ResponseEntity<String> tradingCompanyInfoResponse = restTemplateBuilder.build().getForEntity(tradingCompanyUrl, String.class);
         try {
-            List<TradingCompanyDTO> list = mapper.readValue(tradingCompanyInfoResponse.getBody(), new TypeReference<>() {});
+            response.addAll(mapper.readValue(tradingCompanyInfoResponse.getBody(), new TypeReference<>() {}));
         } catch (JsonProcessingException e) {
             log.error("Failed to deserialize object \n");
             e.printStackTrace();
         }
-        return null;
+
+        return response;
     }
 
     @Override
     public CompanyShare getCurrentInfoAboutCompanyShare() {
+        List<TradingCompany> tradingCompanies = getInfoAboutTradingCompany();
+
         return null;
     }
 
