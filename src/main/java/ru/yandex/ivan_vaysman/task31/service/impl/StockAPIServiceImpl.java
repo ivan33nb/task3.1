@@ -48,10 +48,8 @@ public class StockAPIServiceImpl implements StockAPIService {
     }
 
     @Override
-    public CompanyShare getCurrentInfoAboutCompanyShare() {
+    public void getCurrentInfoAboutCompanyShare() {
         List<TradingCompany> tradingCompanies = getInfoAboutTradingCompany();
-
-        return null;
     }
 
     @Scheduled(fixedRate = 20L)
