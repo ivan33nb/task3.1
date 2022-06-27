@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,9 @@ public class StockAPIServiceImpl implements StockAPIService {
     private final ObjectMapper mapper;
     private final CompanyShareRepository companyShareRepository;
 
-    @Value("${trading-company-url}")
+    @Value("${trading-company-url}" + "${api-token}")
     private String tradingCompanyUrl;
+
 
     @Override
     public List<TradingCompany> getInfoAboutTradingCompany() {
@@ -35,6 +37,7 @@ public class StockAPIServiceImpl implements StockAPIService {
         ResponseEntity<String> tradingCompanyInfoResponse = restTemplateBuilder.build().getForEntity(tradingCompanyUrl, String.class);
         try {
             response.addAll(mapper.readValue(tradingCompanyInfoResponse.getBody(), new TypeReference<>() {}));
+            System.out.println(response.get(0));
         } catch (JsonProcessingException e) {
             log.error("Failed to deserialize object \n");
             e.printStackTrace();

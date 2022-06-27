@@ -21,7 +21,7 @@ import java.util.Date;
 public class CompanyShare {
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
     @Column(name = "avgTotalVolume")
     private Long avgTotalVolume;
     @Column(name = "calculationPrice")
