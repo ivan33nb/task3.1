@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.yandex.ivan_vaysman.task31.domain.entity.TradingCompany;
+import ru.yandex.ivan_vaysman.task31.repository.CompanyShareRepository;
 import ru.yandex.ivan_vaysman.task31.service.StockAPIService;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class StockAPIServiceImpl implements StockAPIService {
 
     private final RestTemplateBuilder restTemplateBuilder;
     private final ObjectMapper mapper;
+    private final CompanyShareRepository companyShareRepository;
 
     @Value("${trading-company-url}")
     private String tradingCompanyUrl;
