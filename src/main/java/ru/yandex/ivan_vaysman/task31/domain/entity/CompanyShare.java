@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -20,13 +17,14 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CompanyShare {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "avgTotalVolume")
     private Long avgTotalVolume;
     @Column(name = "calculationPrice")
     private String calculationPrice;
-    @Column(name = "change")
+    @Column(name = "changee")
     private BigDecimal change;
     @Column(name = "changePercent")
     private BigDecimal changePercent;

@@ -7,13 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CompanyShareDTO {
+
     private Long avgTotalVolume;
     private String calculationPrice;
     private BigDecimal change;
@@ -46,7 +49,7 @@ public class CompanyShareDTO {
     private Date lastTradeTime;
     private BigDecimal latestPrice;
     private String latestSource;
-    @JsonFormat(pattern = "Month D, Yr")
+    @JsonFormat(pattern = "MMMM dd, yyyy", locale = "en")
     private Date latestTime;
     private Date latestUpdate;
     private Long latestVolume;
