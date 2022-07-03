@@ -18,6 +18,7 @@ import ru.yandex.ivan_vaysman.task31.domain.mapper.CompanyShareMapper;
 import ru.yandex.ivan_vaysman.task31.repository.CompanyShareRepository;
 import ru.yandex.ivan_vaysman.task31.service.StockAPIService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -58,6 +59,7 @@ public class StockAPIServiceImpl implements StockAPIService {
   @Override
   public void getCurrentInfoAboutCompanyShare() throws ExecutionException, InterruptedException {
     List<TradingCompany> tradingCompanies = getInfoAboutTradingCompany();
+    List<CompanyShare> resultList = new ArrayList<>();
 
     for (TradingCompany tc : tradingCompanies) {
       ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -75,12 +77,14 @@ public class StockAPIServiceImpl implements StockAPIService {
       try {
         CompanyShareDTO companyShareDTO = mapper.readValue(s, new TypeReference<>() {});
         CompanyShare companyShare = CompanyShareMapper.INSTANCE.unmap(companyShareDTO);
-        companyShareRepository.save(companyShare);
+        resultList.add(companyShare);
       } catch (JsonProcessingException e) {
         log.error("Failed to deserialize object \n");
         e.printStackTrace();
       }
     }
+
+    companyShareRepository.saveAll(resultList);
   }
 
   @Scheduled(fixedRate = 2L)
