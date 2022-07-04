@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
+@DynamicUpdate
 @Table(name = "company_share")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class CompanyShare {
     @Id
     @Column(name = "symbol")
