@@ -1,29 +1,33 @@
 package ru.yandex.ivan_vaysman.task31.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.yandex.ivan_vaysman.task31.domain.entity.CompanyShare;
 import ru.yandex.ivan_vaysman.task31.repository.CompanyShareRepository;
 import ru.yandex.ivan_vaysman.task31.service.StockInfoService;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class StockInfoServiceImpl implements StockInfoService {
 
-    private final CompanyShareRepository companyShareRepository;
+  private final CompanyShareRepository companyShareRepository;
 
-    @Scheduled(fixedRate = 5000)
-    @Override
-    public void getTopFiveMostExpensiveTradingCompany() {
-        List<CompanyShare> all = companyShareRepository.findAll();
-    }
+  @Async
+  @Scheduled(fixedRate = 5000)
+  @Override
+  public void getTopFiveMostExpensiveTradingCompany() {
+    System.out.println(
+        "Top five most expensive trading company -> \n"
+            + companyShareRepository.getTopFiveMostExpensiveTradingCompany());
+  }
 
-    @Scheduled(fixedRate = 5000)
-    @Override
-    public void getTopFiveGreatestChangePercentInStock() {
-
-    }
+  @Async
+  @Scheduled(fixedRate = 5000)
+  @Override
+  public void getTopFiveGreatestChangePercentInStock() {
+    System.out.println(
+        "Top five greatest change percent in stock -> \n"
+            + companyShareRepository.getTopFiveByPercentInStock());
+  }
 }

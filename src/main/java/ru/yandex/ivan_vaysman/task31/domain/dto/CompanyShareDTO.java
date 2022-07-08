@@ -2,9 +2,12 @@ package ru.yandex.ivan_vaysman.task31.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.yandex.ivan_vaysman.task31.util.MultiDateDeserializer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -49,7 +52,7 @@ public class CompanyShareDTO {
     private Date lastTradeTime;
     private BigDecimal latestPrice;
     private String latestSource;
-    @JsonFormat(pattern = "MMMM dd, yyyy", locale = "en")
+    @JsonDeserialize(using = MultiDateDeserializer.class)
     private Date latestTime;
     private Date latestUpdate;
     private Long latestVolume;

@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import ru.yandex.ivan_vaysman.Application;
 import ru.yandex.ivan_vaysman.task31.domain.dto.CompanyShareDTO;
 import ru.yandex.ivan_vaysman.task31.domain.entity.CompanyShare;
 import ru.yandex.ivan_vaysman.task31.domain.entity.TradingCompany;
@@ -41,6 +44,9 @@ public class StockAPIServiceImpl implements StockAPIService {
   @Value("${company-share-url}")
   private String COMPANY_SHARE_URL;
 
+  @Value("${display-percent}")
+  private String DISPLAY_PERCENT;
+
   @Override
   public List<TradingCompany> getInfoAboutTradingCompany() {
     List<TradingCompany> response = new CopyOnWriteArrayList<>();
@@ -56,39 +62,44 @@ public class StockAPIServiceImpl implements StockAPIService {
     return response;
   }
 
+  @Async
+  @Scheduled(fixedDelay = 20000)
   @Override
-  public void getCurrentInfoAboutCompanyShare() throws ExecutionException, InterruptedException {
-    List<TradingCompany> tradingCompanies = getInfoAboutTradingCompany();
-    List<CompanyShare> resultList = new ArrayList<>();
+  public void getCurrentInfoAboutCompanyShare() throws InterruptedException {
+    ExecutorService executorService = Executors.newFixedThreadPool(16);
 
-    for (TradingCompany tc : tradingCompanies) {
-      ExecutorService executorService = Executors.newSingleThreadExecutor();
-      CompletableFuture<String> completableFuture =
-          CompletableFuture.supplyAsync(
-              () ->
-                  restTemplateBuilder
-                      .build()
-                      .getForEntity(
-                          COMPANY_SHARE_URL + tc.getSymbol() + QUOTE + API_TOKEN, String.class)
-                      .getBody(),
-              executorService);
-      log.info("url = {}", COMPANY_SHARE_URL + tc.getSymbol() + QUOTE + API_TOKEN);
-      String s = completableFuture.get();
-      try {
-        CompanyShareDTO companyShareDTO = mapper.readValue(s, new TypeReference<>() {});
-        CompanyShare companyShare = CompanyShareMapper.INSTANCE.unmap(companyShareDTO);
-        resultList.add(companyShare);
-      } catch (JsonProcessingException e) {
-        log.error("Failed to deserialize object \n");
-        e.printStackTrace();
-      }
-    }
-
-    companyShareRepository.saveAll(resultList);
+    executorService.invokeAll(createCallables());
   }
 
-  @Scheduled(fixedRate = 2L)
-  public void f() throws ExecutionException, InterruptedException {
-    getCurrentInfoAboutCompanyShare();
+  public List<Callable<String>> createCallables() {
+    List<Callable<String>> callables = new ArrayList<>();
+
+    List<TradingCompany> tradingCompanies = getInfoAboutTradingCompany();
+
+    for (TradingCompany tc : tradingCompanies) {
+      final String url = COMPANY_SHARE_URL + tc.getSymbol() + QUOTE + API_TOKEN + DISPLAY_PERCENT;
+
+      Callable<String> callable =
+          () -> {
+            String res =
+                restTemplateBuilder
+                    .build()
+                    .getForEntity(
+                        url,
+                        String.class)
+                    .getBody();
+            try {
+              CompanyShareDTO companyShareDTO = mapper.readValue(res, new TypeReference<>() {});
+              CompanyShare companyShare = CompanyShareMapper.INSTANCE.unmap(companyShareDTO);
+              companyShareRepository.save(companyShare);
+            } catch (JsonProcessingException e) {
+              log.error("Failed to deserialize object \n");
+              e.printStackTrace();
+            }
+            return res;
+          };
+      callables.add(callable);
+    }
+    return callables;
   }
 }
