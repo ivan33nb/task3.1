@@ -69,6 +69,7 @@ public class StockAPIServiceImpl implements StockAPIService {
     ExecutorService executorService = Executors.newFixedThreadPool(16);
 
     executorService.invokeAll(createCallables());
+    executorService.shutdown();
   }
 
   public List<Callable<String>> createCallables() {
