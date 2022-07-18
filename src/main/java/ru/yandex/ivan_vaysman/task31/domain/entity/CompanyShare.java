@@ -86,7 +86,7 @@ public class CompanyShare {
     @Column(name = "latest_source")
     private String latestSource;
     @Column(name = "latest_time")
-    private Date latestTime;
+    private String latestTime;
     @Column(name = "latest_update")
     private Date latestUpdate;
     @Column(name = "latest_volume")

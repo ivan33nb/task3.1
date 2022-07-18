@@ -52,8 +52,7 @@ public class CompanyShareDTO {
     private Date lastTradeTime;
     private BigDecimal latestPrice;
     private String latestSource;
-    @JsonDeserialize(using = MultiDateDeserializer.class)
-    private Date latestTime;
+    private String latestTime;
     private Date latestUpdate;
     private Long latestVolume;
     private Long low;
