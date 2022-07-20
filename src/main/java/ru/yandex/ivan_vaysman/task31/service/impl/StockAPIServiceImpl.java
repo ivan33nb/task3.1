@@ -3,7 +3,6 @@ package ru.yandex.ivan_vaysman.task31.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,11 +44,15 @@ public class StockAPIServiceImpl implements StockAPIService {
   @Value("${display-percent}")
   private String DISPLAY_PERCENT;
 
+  private final List<CompanyShare> companyShares = new CopyOnWriteArrayList<>();
+
   @Override
   public List<TradingCompany> getInfoAboutTradingCompany() {
-    List<TradingCompany> response = new CopyOnWriteArrayList<>();
+    List<TradingCompany> response = new ArrayList<>();
     ResponseEntity<String> tradingCompanyInfoResponse =
-        restTemplateBuilder.build().getForEntity(TRADING_COMPANY_URL + API_TOKEN, String.class);
+        restTemplateBuilder
+            .build()
+            .getForEntity(TRADING_COMPANY_URL + "token=" + API_TOKEN, String.class);
     try {
       response.addAll(
           mapper.readValue(tradingCompanyInfoResponse.getBody(), new TypeReference<>() {}));
@@ -61,44 +64,41 @@ public class StockAPIServiceImpl implements StockAPIService {
   }
 
   @Async
-  @Scheduled(fixedDelay = 20000)
+  @Scheduled(cron = "*/10 * * * * *")
   @Override
-  public void getCurrentInfoAboutCompanyShare() throws InterruptedException {
+  public void getCurrentInfoAboutCompanyShare() {
     ExecutorService executorService = Executors.newFixedThreadPool(16);
-
-    executorService.invokeAll(createCallables());
-    executorService.shutdown();
-  }
-
-  public List<Callable<String>> createCallables() {
-    List<Callable<String>> callables = new ArrayList<>();
 
     List<TradingCompany> tradingCompanies = getInfoAboutTradingCompany();
 
-    for (TradingCompany tc : tradingCompanies) {
-      final String url = COMPANY_SHARE_URL + tc.getSymbol() + QUOTE + API_TOKEN + DISPLAY_PERCENT;
+    tradingCompanies.forEach(
+        tc ->
+            CompletableFuture.supplyAsync(
+                    () -> {
+                      String url =
+                          COMPANY_SHARE_URL
+                              + tc.getSymbol()
+                              + QUOTE
+                              + "token="
+                              + API_TOKEN
+                              + DISPLAY_PERCENT;
 
-      Callable<String> callable =
-          () -> {
-            String res =
-                restTemplateBuilder
-                    .build()
-                    .getForEntity(
-                        url,
-                        String.class)
-                    .getBody();
-            try {
-              CompanyShareDTO companyShareDTO = mapper.readValue(res, new TypeReference<>() {});
-              CompanyShare companyShare = CompanyShareMapper.INSTANCE.unmap(companyShareDTO);
-              companyShareRepository.save(companyShare);
-            } catch (JsonProcessingException e) {
-              log.error("Failed to deserialize object \n");
-              e.printStackTrace();
-            }
-            return res;
-          };
-      callables.add(callable);
-    }
-    return callables;
+                      String res =
+                          restTemplateBuilder.build().getForEntity(url, String.class).getBody();
+                      CompanyShareDTO companyShareDTO = new CompanyShareDTO();
+                      try {
+                        companyShareDTO = mapper.readValue(res, new TypeReference<>() {});
+                      } catch (JsonProcessingException e) {
+                        log.error("Failed to deserialize object \n");
+                        e.printStackTrace();
+                      }
+                      return CompanyShareMapper.INSTANCE.unmap(companyShareDTO);
+                    },
+                    executorService)
+                .thenApply(companyShares::add));
+
+    companyShareRepository.saveAll(companyShares);
+    companyShares.clear();
+    executorService.shutdown();
   }
 }
