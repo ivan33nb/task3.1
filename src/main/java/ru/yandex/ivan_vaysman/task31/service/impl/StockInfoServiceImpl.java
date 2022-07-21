@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.yandex.ivan_vaysman.task31.repository.CompanyShareRepository;
 import ru.yandex.ivan_vaysman.task31.service.StockInfoService;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class StockInfoServiceImpl implements StockInfoService {
@@ -12,12 +14,12 @@ public class StockInfoServiceImpl implements StockInfoService {
   private final CompanyShareRepository companyShareRepository;
 
   @Override
-  public String getTopFiveMostExpensiveTradingCompany() {
-    return companyShareRepository.getTopFiveMostExpensiveTradingCompany().toString();
+  public List<String> getTopFiveMostExpensiveTradingCompany() {
+    return companyShareRepository.getTopFiveMostExpensiveTradingCompany();
   }
 
   @Override
-  public String getTopFiveGreatestChangePercentInStock() {
-    return companyShareRepository.getTopFiveByPercentInStock().toString();
+  public List<String> getTopFiveGreatestChangePercentInStock() {
+    return companyShareRepository.getTopFiveByPercentInStock();
   }
 }
