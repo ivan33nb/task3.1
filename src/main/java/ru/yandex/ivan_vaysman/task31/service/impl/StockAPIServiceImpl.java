@@ -67,8 +67,6 @@ public class StockAPIServiceImpl implements StockAPIService {
   @Scheduled(cron = "${cron.loading-info}")
   @Override
   public void getCurrentInfoAboutCompanyShare() {
-    ExecutorService executorService = Executors.newFixedThreadPool(16);
-
     List<TradingCompany> tradingCompanies = getInfoAboutTradingCompany();
 
     tradingCompanies.forEach(
@@ -89,16 +87,13 @@ public class StockAPIServiceImpl implements StockAPIService {
                       try {
                         companyShareDTO = mapper.readValue(res, new TypeReference<>() {});
                       } catch (JsonProcessingException e) {
-                        log.error("Failed to deserialize object \n");
-                        e.printStackTrace();
+                        log.error("Failed to deserialize object \n {}", e.getMessage());
                       }
                       return CompanyShareMapper.INSTANCE.unmap(companyShareDTO);
-                    },
-                    executorService)
+                    })
                 .thenApply(companyShares::add));
 
     companyShareRepository.saveAll(companyShares);
     companyShares.clear();
-    executorService.shutdown();
   }
 }
