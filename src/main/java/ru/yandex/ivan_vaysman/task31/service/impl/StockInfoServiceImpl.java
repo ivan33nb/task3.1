@@ -14,7 +14,7 @@ public class StockInfoServiceImpl implements StockInfoService {
   private final CompanyShareRepository companyShareRepository;
 
   @Async
-  @Scheduled(fixedRate = 5000)
+  @Scheduled(cron = "${cron.show-info}")
   @Override
   public void getTopFiveMostExpensiveTradingCompany() {
     System.out.println(
@@ -23,7 +23,7 @@ public class StockInfoServiceImpl implements StockInfoService {
   }
 
   @Async
-  @Scheduled(fixedRate = 5000)
+  @Scheduled(cron = "${cron.show-info}")
   @Override
   public void getTopFiveGreatestChangePercentInStock() {
     System.out.println(

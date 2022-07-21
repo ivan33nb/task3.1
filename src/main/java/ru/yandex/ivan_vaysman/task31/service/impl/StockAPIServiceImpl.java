@@ -32,16 +32,16 @@ public class StockAPIServiceImpl implements StockAPIService {
   private final CompanyShareRepository companyShareRepository;
   private final String QUOTE = "/quote?";
 
-  @Value("${trading-company-url}")
+  @Value("${api.trading-company}")
   private String TRADING_COMPANY_URL;
 
-  @Value("${api-token}")
+  @Value("${api.token}")
   private String API_TOKEN;
 
-  @Value("${company-share-url}")
+  @Value("${api.company-share}")
   private String COMPANY_SHARE_URL;
 
-  @Value("${display-percent}")
+  @Value("${api.display-percent}")
   private String DISPLAY_PERCENT;
 
   private final List<CompanyShare> companyShares = new CopyOnWriteArrayList<>();
@@ -64,7 +64,7 @@ public class StockAPIServiceImpl implements StockAPIService {
   }
 
   @Async
-  @Scheduled(cron = "*/10 * * * * *")
+  @Scheduled(cron = "${cron.loading-info}")
   @Override
   public void getCurrentInfoAboutCompanyShare() {
     ExecutorService executorService = Executors.newFixedThreadPool(16);
