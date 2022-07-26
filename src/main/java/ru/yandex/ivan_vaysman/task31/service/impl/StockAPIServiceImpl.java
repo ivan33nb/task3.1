@@ -41,7 +41,7 @@ public class StockAPIServiceImpl implements StockAPIService {
   @Value("${api.company-share}")
   private String COMPANY_SHARE_URL;
 
-  @Value("${api.display-percent}")
+  @Value("${api.path-variable.display-percent}")
   private String DISPLAY_PERCENT;
 
   private final List<CompanyShare> companyShares = new CopyOnWriteArrayList<>();

@@ -10,16 +10,17 @@ spring:
     banner-mode: off
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/task3part1
-    username: root
-    password: root
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
 
 api:
-  token: Tpk_ee567917a6b640bb8602834c9d30e571
-  trading-company: https://sandbox.iexapis.com/stable/ref-data/symbols?
-  company-share: https://sandbox.iexapis.com/stable/stock/
-  display-percent: &displayPercent=true
+  token: ${api.token}
+  trading-company: ${api.trading-company}
+  company-share: ${api.company-share}
+  path-variable:
+    display-percent: ${api.path-variable.display-percent}
 
 cron:
-  show-info: '*/5 * * * * *'
-  loading-info: '*/10 * * * * *'
+  show-info: ${cron.show-info}
+  loading-info: ${cron.loading-info}
