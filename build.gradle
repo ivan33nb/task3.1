@@ -12,42 +12,23 @@ repositories {
 	mavenCentral()
 }
 
-ext{
-	jacksonVersion = '2.13.3'
-	lombokVersion = '1.18.22'
-	springDataVersion = '2.7.1'
-}
-
 dependencies {
-
 	implementation 'org.springframework.boot:spring-boot-starter'
-
-	//web
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.awaitility:awaitility:4.2.0'
+	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
 	implementation group: 'org.springframework', name: 'spring-web', version: '5.3.20'
-
-	//mapper
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
-
-	//lombok
-	compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
-	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
-
-	//json
-	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
-	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: "${jacksonVersion}"
-
-	//db
-	implementation group: 'org.liquibase', name: 'liquibase-core', version: '4.13.0'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
 	implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: "${springDataVersion}"
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "${springDataVersion}"
-
-	//tests
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.7.1'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.7.1'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.3'
 	testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.17.3'
 	testImplementation "org.testcontainers:mysql:1.17.3"
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
 
