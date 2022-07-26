@@ -27,6 +27,8 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.7.1'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.7.1'
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.3'
+	testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.17.3'
+	testImplementation "org.testcontainers:mysql:1.17.3"
 
 }
 
