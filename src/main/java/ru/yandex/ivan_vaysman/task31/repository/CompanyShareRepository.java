@@ -6,7 +6,7 @@ import ru.yandex.ivan_vaysman.task31.domain.entity.CompanyShare;
 
 import java.util.List;
 
-public interface CompanyShareRepository extends JpaRepository<CompanyShare, Long> {
+public interface CompanyShareRepository extends JpaRepository<CompanyShare, String> {
 
   @Query(
       nativeQuery = true,
