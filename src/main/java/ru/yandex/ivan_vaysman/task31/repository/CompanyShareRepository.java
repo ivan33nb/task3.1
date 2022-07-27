@@ -1,20 +1,16 @@
 package ru.yandex.ivan_vaysman.task31.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.yandex.ivan_vaysman.task31.domain.entity.CompanyShare;
 
-import java.util.List;
-
 public interface CompanyShareRepository extends JpaRepository<CompanyShare, String> {
 
-  @Query(
-      nativeQuery = true,
-      value = "select csh.company_name from company_share csh order by csh.change_percent limit 5")
-  List<String> getTopFiveByPercentInStock();
+  @Query("select csh.companyName from CompanyShare csh order by csh.changePercent")
+  Page<String> getTopFiveByPercentInStock(Pageable pageable);
 
-  @Query(
-      nativeQuery = true,
-      value = "select csh.company_name from company_share csh order by csh.latest_price limit 5")
-  List<String> getTopFiveMostExpensiveTradingCompany();
+  @Query("select csh.companyName from CompanyShare csh order by csh.latestPrice")
+  Page<String> getTopFiveMostExpensiveTradingCompany(Pageable pageable);
 }
