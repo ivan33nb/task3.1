@@ -7,8 +7,9 @@ import ru.yandex.ivan_vaysman.task31.domain.entity.CompanyShare;
 
 @Mapper
 public interface CompanyShareMapper {
-    CompanyShareMapper INSTANCE = Mappers.getMapper(CompanyShareMapper.class);
+  CompanyShareMapper INSTANCE = Mappers.getMapper(CompanyShareMapper.class);
 
-    CompanyShare unmap(CompanyShareDTO dto);
-    CompanyShareDTO map(CompanyShare company);
+  CompanyShare unmap(CompanyShareDTO dto);
+
+  CompanyShareDTO map(CompanyShare company);
 }

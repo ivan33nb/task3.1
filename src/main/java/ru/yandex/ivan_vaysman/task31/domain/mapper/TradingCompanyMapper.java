@@ -8,8 +8,9 @@ import ru.yandex.ivan_vaysman.task31.domain.entity.TradingCompany;
 @Mapper
 public interface TradingCompanyMapper {
 
-    TradingCompanyMapper INSTANCE = Mappers.getMapper(TradingCompanyMapper.class);
+  TradingCompanyMapper INSTANCE = Mappers.getMapper(TradingCompanyMapper.class);
 
-    TradingCompany unmap(TradingCompanyDTO dto);
-    TradingCompanyDTO map(TradingCompany tradingCompany);
+  TradingCompany unmap(TradingCompanyDTO dto);
+
+  TradingCompanyDTO map(TradingCompany tradingCompany);
 }

@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 public interface StockAPIService {
 
-    List<TradingCompany> getInfoAboutTradingCompany();
-    void getCurrentInfoAboutCompanyShare() throws ExecutionException, InterruptedException;
+  List<TradingCompany> getInfoAboutTradingCompany();
+
+  void getCurrentInfoAboutCompanyShare() throws ExecutionException, InterruptedException;
 }

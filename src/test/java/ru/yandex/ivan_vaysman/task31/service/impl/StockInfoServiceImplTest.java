@@ -33,7 +33,7 @@ class StockInfoServiceImplTest {
   @Autowired private CompanyShareRepository companyShareRepository;
 
   @Test
-  public void checkContainerIsRunning(){
+  public void checkContainerIsRunning() {
     assertTrue(mySqlDB.isRunning());
   }
 
@@ -65,7 +65,7 @@ class StockInfoServiceImplTest {
   }
 
   @Test
-  public void checkFindById(){
+  public void checkFindById() {
     CompanyShare companyShare = companyShareRepository.findById("first").orElse(null);
     assertNotNull(companyShare);
     assertEquals(companyShare.getSymbol(), "first");
