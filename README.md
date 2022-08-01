@@ -20,3 +20,10 @@ The most recent 5 companies that have the greatest change percent in stock value
 Once the process has completed (looped through all companies), it should start again and download the current stock information for each company again.
 If the information has changed for a company, then this change needs to be recorded in the DB, i.e. a log for each company of the changes to their stocks over time. IMPORTANT
 Application should be deployed to AWS
+
+###Для запуска
+ - Заполнить файл .env в корне проекта
+ - docker-compose build
+ - docker-compose up
+
+Приложение будет запущенно на 8080 порту.

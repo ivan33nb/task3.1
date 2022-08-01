@@ -1,0 +1,29 @@
+server:
+  port: 5000
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+      show-sql: false
+      properties:
+        hibernate:
+          format-sql: false
+  main:
+    banner-mode: off
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+api:
+  token: ${API_TOKEN}
+  trading-company: ${API_TRADING_COMPANY}
+  company-share: ${API_COMPANY_SHARE}
+  path-variable:
+    display-percent: ${API_PATH_VARIABLE_DISPLAY_PERCENT}
+
+cron:
+  show-info: ${CRON_SHOW_INFO}
+  loading-info: ${CRON_LOADING_INFO}
