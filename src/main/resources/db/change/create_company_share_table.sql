@@ -1,4 +1,4 @@
-create table company_share
+create table if not exists company_share
 (
     symbol                     varchar(255)   null,
     avg_total_volume           bigint         null,
