@@ -1,6 +1,6 @@
 create table if not exists company_share
 (
-    symbol                     varchar(255)   null,
+    symbol                     varchar(255)   primary key,
     avg_total_volume           bigint         null,
     calculation_price          varchar(255)   null,
     changee                    decimal(19, 2) null,
