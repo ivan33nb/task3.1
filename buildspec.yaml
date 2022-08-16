@@ -1,12 +1,11 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands: --defaults-file=/liquibase/changelog/liquibase.properties update
   build:
     commands:
       - echo Entered the build phase...
       - gradle build
+      - --defaults-file=/liquibase/changelog/liquibase.properties update
   post_build:
     commands:
       - echo Build completed successfully
