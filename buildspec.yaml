@@ -1,8 +1,6 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands: --defaults-file=/liquibase/changelog/liquibase.properties update
   build:
     commands:
       - echo Entered the build phase...
