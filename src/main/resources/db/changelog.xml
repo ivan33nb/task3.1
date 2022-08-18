@@ -7,5 +7,6 @@
     <include file="change/create_user_table.sql" relativeToChangelogFile="true"/>
     <include file="change/drop_user_table.sql" relativeToChangelogFile="true"/>
     <include file="change/create_new_user_table.sql" relativeToChangelogFile="true"/>
+    <include file="change/added_colums_in_user_table.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
